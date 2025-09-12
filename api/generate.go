@@ -505,7 +505,7 @@ func Generate(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-// Handler is the main entry point for Vercel
+// Handler is the Vercel function entry point
 func Handler(w http.ResponseWriter, r *http.Request) {
 	Generate(w, r)
 }

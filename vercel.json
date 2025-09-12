@@ -4,10 +4,6 @@
     "outputDirectory": "frontend/dist",
     "routes": [
         {
-            "src": "/api",
-            "dest": "/api/index.go"
-        },
-        {
             "src": "/wiz$",
             "dest": "/index.html"
         },
