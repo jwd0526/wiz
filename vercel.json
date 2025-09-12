@@ -4,7 +4,7 @@
     "outputDirectory": "frontend/dist",
     "functions": {
         "backend/main.go": {
-            "runtime": "@vercel/go"
+            "runtime": "@vercel/go@3.0.0"
         }
     },
     "routes": [
