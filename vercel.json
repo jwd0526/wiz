@@ -11,12 +11,12 @@
             "dest": "/backend/main.go"
         },
         {
-            "src": "/wiz/(.*)",
-            "dest": "/frontend/dist/$1"
+            "src": "/wiz$",
+            "dest": "/frontend/dist/index.html"
         },
         {
-            "src": "/wiz",
-            "dest": "/frontend/dist/index.html"
+            "src": "/wiz/(.*)",
+            "dest": "/frontend/dist/$1"
         }
     ],
     "builds": [
