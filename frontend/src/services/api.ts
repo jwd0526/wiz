@@ -1,6 +1,8 @@
 import type { Game } from '../types/game';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = process.env.NODE_ENV === 'development' 
+  ? 'http://localhost:8000' 
+  : '';
 
 export class ApiError extends Error {
   constructor(message: string, public status?: number) {
@@ -11,7 +13,7 @@ export class ApiError extends Error {
 
 export const generateGame = async (size: number, nodes: number, walls: number): Promise<Game> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/generate-game`, {
+    const response = await fetch(`${API_BASE_URL}/api/main.go`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

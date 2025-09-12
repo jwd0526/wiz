@@ -505,9 +505,7 @@ func Generate(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func main() {
-	http.HandleFunc("/generate-game", Generate)
-
-	fmt.Println("Server starting on :8000")
-	http.ListenAndServe(":8000", nil)
+// Handler is the main entry point for Vercel
+func Handler(w http.ResponseWriter, req *http.Request) {
+	Generate(w, req)
 }
