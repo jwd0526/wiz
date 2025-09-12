@@ -4,8 +4,8 @@
     "outputDirectory": "frontend/dist",
     "routes": [
         {
-            "src": "/api/(.*)",
-            "dest": "/api/generate.go"
+            "src": "/api",
+            "dest": "/api/index.go"
         },
         {
             "src": "/wiz$",

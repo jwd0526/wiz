@@ -509,9 +509,3 @@ func Generate(w http.ResponseWriter, req *http.Request) {
 func Handler(w http.ResponseWriter, r *http.Request) {
 	Generate(w, r)
 }
-
-// For backwards compatibility during development
-func main() {
-	http.HandleFunc("/generate-game", Generate)
-	http.ListenAndServe(":8000", nil)
-}
