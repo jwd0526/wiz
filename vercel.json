@@ -2,15 +2,10 @@
     "version": 2,
     "buildCommand": "cd frontend && npm ci && npm run build",
     "outputDirectory": "frontend/dist",
-    "functions": {
-        "backend/main.go": {
-            "runtime": "@vercel/go@3.0.0"
-        }
-    },
     "routes": [
         {
             "src": "/api/(.*)",
-            "dest": "/backend/main.go"
+            "dest": "/api/main.go"
         },
         {
             "src": "/wiz$",
