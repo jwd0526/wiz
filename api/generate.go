@@ -471,7 +471,7 @@ func enableCORS(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 }
 
-func Generate(w http.ResponseWriter, req *http.Request) {
+func generate(w http.ResponseWriter, req *http.Request) {
 	enableCORS(w, req)
 	
 	if req.Method == "OPTIONS" {
@@ -507,5 +507,5 @@ func Generate(w http.ResponseWriter, req *http.Request) {
 
 // Handler is the Vercel function entry point
 func Handler(w http.ResponseWriter, r *http.Request) {
-	Generate(w, r)
+	generate(w, r)
 }
