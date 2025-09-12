@@ -1,7 +1,9 @@
 {
     "version": 2,
+    "buildCommand": "cd frontend && npm ci && npm run build",
+    "outputDirectory": "frontend/dist",
     "functions": {
-            "backend/main.go": {
+        "backend/main.go": {
             "runtime": "@vercel/go"
         }
     },
@@ -12,24 +14,11 @@
         },
         {
             "src": "/wiz$",
-            "dest": "/frontend/dist/index.html"
+            "dest": "/index.html"
         },
         {
             "src": "/wiz/(.*)",
-            "dest": "/frontend/dist/$1"
-        }
-    ],
-    "builds": [
-        {
-            "src": "backend/main.go",
-            "use": "@vercel/go"
-        },
-        {
-            "src": "frontend/package.json",
-            "use": "@vercel/static-build",
-            "config": {
-                "distDir": "dist"
-            }
+            "dest": "/$1"
         }
     ]
 }
