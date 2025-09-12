@@ -1,0 +1,35 @@
+{
+    "version": 2,
+    "functions": {
+            "backend/main.go": {
+            "runtime": "@vercel/go"
+        }
+    },
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "/backend/main.go"
+        },
+        {
+            "src": "/wiz/(.*)",
+            "dest": "/frontend/dist/$1"
+        },
+        {
+            "src": "/wiz",
+            "dest": "/frontend/dist/index.html"
+        }
+    ],
+    "builds": [
+        {
+            "src": "backend/main.go",
+            "use": "@vercel/go"
+        },
+        {
+            "src": "frontend/package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "dist"
+            }
+        }
+    ]
+}
