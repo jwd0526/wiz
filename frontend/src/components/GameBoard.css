@@ -73,7 +73,7 @@
   font-weight: bold;
   position: relative; 
   z-index: 7;
-  box-shadow: inset -1px -1px 1px var(--color-shadow-accent),
+  box-shadow: inset -1px -1px 1px var(--color-shadow),
               inset 1px 1px 1px var(--color-game-pieces);
   font-size: 42px;
   font-family: "Fredoka One", cursive;
