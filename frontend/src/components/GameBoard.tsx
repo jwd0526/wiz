@@ -65,7 +65,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
     const maxAvailableSpace = Math.min(availableHeight * 0.9, availableWidth * 0.9);
     
     const BOARD_PADDING = Math.max(15, Math.min(30, maxAvailableSpace * 0.04));
-    const BOARD_GAP = Math.max(2, Math.min(20, maxAvailableSpace * 0.035));
+    const BOARD_GAP = Math.max(8, Math.min(25, maxAvailableSpace * 0.05));
     
     const spaceForCells = maxAvailableSpace - (BOARD_PADDING * 2) - (BOARD_GAP * (boardSize - 1));
     const cellSize = Math.max(20, spaceForCells / boardSize);
@@ -556,7 +556,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
           if (wall.horizontal) {
             const wallLength = (wall.x2 - wall.x1 + 1) * (dimensions.cellSize + dimensions.boardGap) - dimensions.boardGap;
             const x = dimensions.boardPadding + wall.x1 * (dimensions.cellSize + dimensions.boardGap);
-            const y = dimensions.boardPadding + (wall.y1 + 1) * (dimensions.cellSize + dimensions.boardGap) - (dimensions.boardGap / 2) - (wallThickness / 2);
+            const y = dimensions.boardPadding + (wall.y1 + 1) * dimensions.cellSize + wall.y1 * dimensions.boardGap + (dimensions.boardGap / 2) - (wallThickness / 2);
             
             return (
               <div
@@ -573,7 +573,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
             );
           } else {
             const wallLength = (wall.y2 - wall.y1 + 1) * (dimensions.cellSize + dimensions.boardGap) - dimensions.boardGap;
-            const x = dimensions.boardPadding + (wall.x1 + 1) * (dimensions.cellSize + dimensions.boardGap) - (dimensions.boardGap / 2) - (wallThickness / 2);
+            const x = dimensions.boardPadding + (wall.x1 + 1) * dimensions.cellSize + wall.x1 * dimensions.boardGap + (dimensions.boardGap / 2) - (wallThickness / 2);
             const y = dimensions.boardPadding + wall.y1 * (dimensions.cellSize + dimensions.boardGap);
             
             return (
