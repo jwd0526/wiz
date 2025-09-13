@@ -42,7 +42,7 @@
   background: white;
   box-shadow: inset -1.5px -1.5px 1px #000000,
               inset 1px 1px 1px #ececec,
-              0px 0px 0px rgba(0, 0, 0, 0);
+              0px 0px 0px #00000000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -104,6 +104,7 @@
                1px 1px 1px #86efac;
   color: #22c55e;
   transform: translateY(-1px);
+  transition: none !important;
 }
 
 

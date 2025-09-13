@@ -160,8 +160,8 @@
 }
 
 .button:hover:not(:disabled) .icon {
-  filter: drop-shadow(1px 1px 0px rgba(0, 0, 0, .05))
-          drop-shadow(0.5px 0.5px 1px rgba(255, 255, 255, 0.3));
+  filter: drop-shadow(1px 1px 0px #00000010)
+          drop-shadow(0.5px 0.5px 1px #ffffff50);
 }
 
 .button:active:not(:disabled) .icon {
@@ -178,7 +178,7 @@
 .icon {
   width: auto;
   height: auto;
-  filter: drop-shadow(1px 1px 0px rgba(0, 0, 0, 1))
+  filter: drop-shadow(1px 1px 0px #000000ff)
           drop-shadow(-.5px -.5px .5px #ececec57);
   transition: filter 0.3s ease,
               transform 0.3s ease;
