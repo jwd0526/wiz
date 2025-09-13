@@ -1,4 +1,4 @@
-package handlers
+package handler
 
 import (
 	"encoding/json"
@@ -14,7 +14,7 @@ func EnableCORS(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 }
 
-func GenerateGame(w http.ResponseWriter, r *http.Request) {
+func generateGame(w http.ResponseWriter, r *http.Request) {
 	EnableCORS(w)
 	
 	if r.Method == "OPTIONS" {
@@ -46,4 +46,8 @@ func GenerateGame(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("Error encoding response: %v", err)
 	}
+}
+
+func Handler(w http.ResponseWriter, r *http.Request) {
+	generateGame(w, r)
 }
