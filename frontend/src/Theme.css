@@ -1,0 +1,101 @@
+/* Button State Utilities */
+.sunken {
+    box-shadow: inset -.25px -.25px 0px var(--color-shadow-accent),
+                inset .25px .25px .5px var(--color-shadow-accent),
+                0px 0px 0px var(--color-shadow);
+}
+
+.raised {
+    box-shadow: inset 0px 0px 0px var(--color-shadow),
+                inset -1px -1px 0px var(--color-shadow-accent),
+                -1.5px -1.5px 0px var(--color-shadow);
+}
+
+.pressed {
+    box-shadow: inset -1px -1px 0px var(--color-shadow),
+                inset 1px 1px .5px var(--color-shadow-accent),
+                0px 0px 0px var(--color-shadow);
+}
+
+/* Text State Utilities */
+.sunken-text {
+    text-shadow: -1px -1px 1px var(--color-shadow),
+                 1px 1px 1px var(--color-shadow-accent);
+}
+
+.raised-text {
+    text-shadow: 1px 1px 1px var(--color-shadow),
+                 -1px -1px 1px var(--color-shadow-accent);
+    transform: translate(-1px, 1px);
+}
+
+.pressed-text {
+    text-shadow: 0px 0px 0px var(--color-shadow),
+                 0px 0px 0px var(--color-shadow-accent);
+}
+
+/* Drop Shadow Utilities */
+.drop-shadow-light {
+    filter: drop-shadow(1px 1px 0px var(--color-shadow))
+            drop-shadow(0.5px 0.5px 1px var(--color-shadow-accent));
+}
+
+.drop-shadow-pressed {
+    filter: drop-shadow(-1px -1px 0px var(--color-shadow))
+            drop-shadow(1px 1px .5px var(--color-shadow-accent));
+    transform: translate(2px, 2px);
+}
+
+.drop-shadow-subtle {
+    filter: drop-shadow(1px 1px 0px var(--color-background))
+            drop-shadow(-.5px -.5px .5px var(--color-shadow-accent));
+}
+
+/* Animation State Utilities */
+.animate-fade-in {
+    animation: fadeIn 0.3s ease;
+}
+
+.animate-fade-out {
+    animation: fadeOut 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Game State Utilities */
+.game-complete {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.game-transitioning {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Button Variant Utilities */
+.button--disabled {
+    opacity: 0.1;
+    cursor: auto;
+    pointer-events: none;
+}
+
+.button--active:hover:not(.button--disabled) {
+    box-shadow: inset -.25px -.25px 0px var(--color-shadow-accent),
+                inset .25px .25px .5px var(--color-shadow-accent),
+                0px 0px 0px var(--color-shadow);
+}
+
+.button--active:active:not(.button--disabled) {
+    box-shadow: inset -1px -1px 0px var(--color-shadow),
+                inset 1px 1px .5px var(--color-shadow-accent),
+                0px 0px 0px var(--color-shadow);
+}

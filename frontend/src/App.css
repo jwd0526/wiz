@@ -1,7 +1,17 @@
+:root {
+  /* Essential Colors Only */
+  --color-shadow: #ffffff;
+  --color-background: #202020;
+  --color-shadow-accent: #333333;
+  --color-game-pieces: #304974;
+  --color-complete: #22c55e;
+  --color-game-pieces-shadow: #1b2942;
+}
+
 .app {
   height: 100vh;
   width: 100vw;
-  background: black;
+  background: var(--color-background);
   overflow: hidden;
   position: relative;
 }
@@ -27,9 +37,9 @@
   font-size: 30px;
   font-family: "Fredoka One", cursive;
   text-shadow: 
-  -1.5px -1.5px 1px #ffffff,
-  1px 1px 1px #131313;
-  color: black;
+  -1.5px -1.5px 1px var(--color-shadow),
+  1px 1px 1px var(--color-shadow-accent);
+  color: var(--color-background);
   letter-spacing: 10px;
   margin: 0;
 }
@@ -40,14 +50,14 @@
   align-items: center;
   gap: 15px;
   padding: 40px;
-  color: #938a82;
+  color: var(--color-shadow-accent);
 }
 
 .spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #0c0c0c;
-  border-top: 4px solid #de690c;
+  border: 4px solid var(--color-background);
+  border-top: 4px solid var(--color-game-pieces);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -58,11 +68,11 @@
 }
 
 .error {
-  background-color: #072825;
-  color: #8de3db;
+  background-color: var(--color-background);
+  color: var(--color-complete);
   padding: 15px;
   border-radius: 8px;
-  border: 1px solid #0a3934;
+  border: 1px solid var(--color-shadow-accent);
   margin: 20px 0;
   text-align: center;
 }
@@ -82,7 +92,7 @@
 .rewind-btn {
   width: 60px;
   height: 60px;
-  background: black;
+  background: var(--color-background);
   border: none;
   border-radius: 50%;
   box-shadow: none;
@@ -92,20 +102,16 @@
   justify-content: center;
   transition: 0.3s ease;
   font-family: "Fredoka One", cursive;
-  text-shadow: -1.5px -1.5px 1px #ffffff,
-  1px 1px 1px #131313;
-  color: black;
+  text-shadow: -1.5px -1.5px 1px var(--color-shadow),
+  1px 1px 1px var(--color-shadow-accent);
+  color: var(--color-background);
   margin: 0;
-}
-
-.arrow-btn {
-  font-size: 30px;
 }
 
 .arrow-btn:hover,
 .rewind-btn:hover:not(:disabled) {
-  box-shadow: inset -2px -2px 2px white;
-  text-shadow: -2.5px -2.5px 2px #ffffff;
+  box-shadow: inset -2px -2px 2px var(--color-shadow);
+  text-shadow: -2.5px -2.5px 2px var(--color-shadow);
 }
 
 .rewind-btn {
@@ -113,8 +119,8 @@
   height: 60px;
   font-weight: bold;
   font-size: 30px;
-  box-shadow: -.5px -.5px .5px #ffffff,
-              1px 1px 1px #131313;
+  box-shadow: -.5px -.5px .5px var(--color-shadow),
+              1px 1px 1px var(--color-shadow-accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -132,41 +138,41 @@
   
   font-size: 50px;
   padding: 10px;
-  box-shadow: inset 0px 0px 0px #ffffff,
-              inset -1px -1px .5px #131313,
-              -1px -1px 0px #ffffff;
-  background: black;
+  box-shadow: inset 0px 0px 0px var(--color-shadow),
+              inset -1px -1px .5px var(--color-shadow-accent),
+              -1px -1px 0px var(--color-shadow);
+  background: var(--color-background);
   border: none;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: black;
+  color: var(--color-background);
   transition: box-shadow 0.3s ease,
               opacity 0.3s ease;
   cursor: pointer;
 }
 
 .button:hover:not(:disabled) {
-  box-shadow: inset -.25px -.25px 0px #131313,
-              inset .25px .25px .5px #131313,
-              0px 0px 0px #ffffff;
+  box-shadow: inset -.25px -.25px 0px var(--color-shadow-accent),
+              inset .25px .25px .5px var(--color-shadow-accent),
+              0px 0px 0px var(--color-shadow);
 }
 
 .button:active:not(:disabled) {
-  box-shadow: inset -1px -1px 0px #ffffff,
-              inset 1px 1px .5px #131313,
-              0px 0px 0px #ffffff;
+  box-shadow: inset -1px -1px 0px var(--color-shadow),
+              inset 1px 1px .5px var(--color-shadow-accent),
+              0px 0px 0px var(--color-shadow);
 }
 
 .button:hover:not(:disabled) .icon {
-  filter: drop-shadow(1px 1px 0px #ffffffef)
-          drop-shadow(0.5px 0.5px 1px #000000af);
+  filter: drop-shadow(1px 1px 0px var(--color-shadow-accent))
+          drop-shadow(0.5px 0.5px 1px var(--color-shadow-accent));
 }
 
 .button:active:not(:disabled) .icon {
-  filter: drop-shadow(-1px -1px 0px #fffffafa)
-          drop-shadow(1px 1px .5px #13131378);
+  filter: drop-shadow(-1px -1px 0px var(--color-shadow))
+          drop-shadow(1px 1px .5px var(--color-shadow-accent));
   transform: translate(2px, 2px);
 }
 
@@ -178,8 +184,8 @@
 .icon {
   width: auto;
   height: auto;
-  filter: drop-shadow(1px 1px 0px #ffffff00)
-          drop-shadow(-.5px -.5px .5px #131313a8);
+  filter: drop-shadow(1px 1px 0.5px var(--color-shadow))
+          drop-shadow(-.5px -.5px .5px var(--color-shadow-accent));
   transition: filter 0.3s ease,
               transform 0.3s ease;
 }

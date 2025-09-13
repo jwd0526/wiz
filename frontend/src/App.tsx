@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import classNames from 'classnames';
 import GameBoard from './components/GameBoard';
 import Restart from './components/Restart';
 import Right from './components/Right';
@@ -6,6 +7,7 @@ import Left from './components/Left';
 import type { Game } from './types/game';
 import { generateGame, ApiError } from './services/api';
 import './App.css';
+import './Theme.css';
 
 function App() {
   const [game, setGame] = useState<Game | null>(null);
@@ -139,9 +141,17 @@ function App() {
   };
 
   const handleNextLevel = () => {
+    const nextLevel = currentLevel + 1;
+    
+    // If we have a pre-loaded game ready, use it
     if (nextLevelReady && pendingGame) {
       setIsTransitioningOut(true);
-      setCurrentLevel(currentLevel + 1);
+      setCurrentLevel(nextLevel);
+    }
+    // If we're going forward to a level we've been to before, generate it directly
+    else if (nextLevel <= highestLevel) {
+      setCurrentLevel(nextLevel);
+      generateLevel(nextLevel);
     }
   };
 
@@ -150,6 +160,10 @@ function App() {
       const prevLevel = currentLevel - 1;
       setCurrentLevel(prevLevel);
       generateLevel(prevLevel);
+      // Reset next level states when going backward
+      setNextLevelReady(false);
+      setPendingGame(null);
+      setGreenAnimationComplete(false);
     }
   };
 
@@ -234,24 +248,30 @@ function App() {
         <div className="nav-controls">
           <button 
             onClick={handlePrevLevel} 
-            className="button"
+            className={classNames('button', 'button--active', {
+              'button--disabled': currentLevel <= 1
+            })}
             disabled={currentLevel <= 1}
           >
-            <Left className="icon" size={200} color="#000000" />
+            <Left className={classNames('icon', 'drop-shadow-subtle')} size={200} color="var(--color-background)" />
           </button>
           <button 
             onClick={handleRestart} 
-            className="button"
+            className={classNames('button', 'button--active', {
+              'button--disabled': gameStatus.pathLength === 0
+            })}
             disabled={gameStatus.pathLength === 0}
           >
-            <Restart className="icon" size={40} color="#000000" />
+            <Restart className={classNames('icon', 'drop-shadow-subtle')} size={40} color="var(--color-background)" />
           </button>
           <button 
             onClick={handleNextLevel} 
-            className="button"
-            disabled={(!gameStatus.isComplete && currentLevel >= highestLevel) || (gameStatus.isComplete && !nextLevelReady)}
+            className={classNames('button', 'button--active', {
+              'button--disabled': (currentLevel >= highestLevel && !gameStatus.isComplete) || (gameStatus.isComplete && !nextLevelReady && currentLevel + 1 > highestLevel)
+            })}
+            disabled={(currentLevel >= highestLevel && !gameStatus.isComplete) || (gameStatus.isComplete && !nextLevelReady && currentLevel + 1 > highestLevel)}
           >
-            <Right className="icon" size={800} color="#000000" />
+            <Right className={classNames('icon', 'drop-shadow-subtle')} size={800} color="var(--color-background)" />
           </button>
         </div>
       </div>

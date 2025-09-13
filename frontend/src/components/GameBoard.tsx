@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
+import classNames from 'classnames';
 import type { Game, GameState } from '../types/game';
 import './GameBoard.css';
+import '../Theme.css';
 
 interface GameBoardProps {
   game: Game | null;
@@ -22,7 +24,6 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
     isDrawing: false
   });
   
-  const [mousePosition, setMousePosition] = useState<{x: number, y: number} | null>(null);
   
   const [solutionAnimation, setSolutionAnimation] = useState<{
     animatingCells: string[];
@@ -227,7 +228,6 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
     if (!gameState.isDrawing) return;
     
     setGameState(prev => ({ ...prev, isDrawing: false }));
-    setMousePosition(null);
   }, [gameState.isDrawing]);
 
   // Touch event handlers
@@ -242,44 +242,31 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
     handleMouseUp();
   }, [handleMouseUp]);
 
-  // Mouse position tracking for dynamic path drawing
-  const handleBoardMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!gameState.isDrawing || !boardRef.current || !game) return;
-
-    const boardRect = boardRef.current.getBoundingClientRect();
-    const relativeX = e.clientX - boardRect.left;
-    const relativeY = e.clientY - boardRect.top;
-    
-    setMousePosition({ x: relativeX, y: relativeY });
-  }, [gameState.isDrawing, game]);
-
-  const handleBoardTouchMove = useCallback((e: React.TouchEvent) => {
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
-    if (!gameState.isDrawing || !boardRef.current || !game) return;
+    if (!gameState.isDrawing) return;
 
     const touch = e.touches[0];
-    const boardRect = boardRef.current.getBoundingClientRect();
-    const relativeX = touch.clientX - boardRect.left;
-    const relativeY = touch.clientY - boardRect.top;
-    
-    setMousePosition({ x: relativeX, y: relativeY });
+    const boardRect = boardRef.current?.getBoundingClientRect();
+    if (!boardRect || !game) return;
 
-    // Continue with existing touch move logic
     const boardSize = game.board.length;
     const dimensions = calculateDimensions(boardSize);
     
-    const cellSpacing = dimensions.cellSize + dimensions.boardGap;
-    const cellX = Math.floor((relativeX - dimensions.boardPadding) / cellSpacing);
-    const cellY = Math.floor((relativeY - dimensions.boardPadding) / cellSpacing);
+    const relativeX = touch.clientX - boardRect.left;
+    const relativeY = touch.clientY - boardRect.top;
     
-    if (cellX >= 0 && cellX < boardSize && cellY >= 0 && cellY < boardSize) {
-      handleMouseEnter(cellX, cellY);
+    const cellSpacing = dimensions.cellSize + dimensions.boardGap;
+    const x = Math.floor((relativeX - dimensions.boardPadding) / cellSpacing);
+    const y = Math.floor((relativeY - dimensions.boardPadding) / cellSpacing);
+    
+    if (x >= 0 && x < boardSize && y >= 0 && y < boardSize) {
+      handleMouseEnter(x, y);
     }
   }, [gameState.isDrawing, game, calculateDimensions, handleMouseEnter]);
 
   const clearPath = useCallback(() => {
     setGameState({ currentPath: [], isDrawing: false });
-    setMousePosition(null);
     onPathChange?.(false, 0);
   }, [onPathChange]);
 
@@ -424,7 +411,6 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
   React.useEffect(() => {
     if (game) {
       setGameState({ currentPath: [], isDrawing: false });
-      setMousePosition(null);
       
       setBoardRevealAnimation({ showCompleteClasses: true });
       
@@ -439,7 +425,6 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
   React.useEffect(() => {
     if (gameStatus.pathLength === 0 && !gameStatus.isValid && !gameStatus.isComplete) {
       setGameState({ currentPath: [], isDrawing: false });
-      setMousePosition(null);
       setSolutionAnimation({ animatingCells: [], currentIndex: -1, showGreenPhase: false, greenAnimationComplete: false });
     }
   }, [gameStatus]);
@@ -474,7 +459,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
           ...prev,
           showGreenPhase: true
         }));
-      }, 200);
+      }, 300);
 
       return () => clearTimeout(timer);
     }
@@ -514,7 +499,10 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
     <div className="board-container">
       <div 
         ref={boardRef}
-        className={`board${boardRevealAnimation.showCompleteClasses || isTransitioningOut ? ' board-complete' : ''}`} 
+        className={classNames('board', {
+          'board-complete': boardRevealAnimation.showCompleteClasses || isTransitioningOut,
+          'game-transitioning': isTransitioningOut
+        })} 
         style={{ 
           gridTemplateColumns: `repeat(${boardSize}, ${dimensions.cellSize}px)`,
           gridTemplateRows: `repeat(${boardSize}, ${dimensions.cellSize}px)`,
@@ -523,37 +511,27 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
           position: 'relative'
         }}
         onMouseLeave={handleMouseUp}
-        onMouseMove={handleBoardMouseMove}
-        onTouchMove={handleBoardTouchMove}
+        onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
         {game.board.map((row, y) =>
           row.map((node, x) => {
             const cellId = getCellId(x, y);
             const isTraversed = gameState.currentPath.includes(cellId);
-            const fontSize = Math.max(12, Math.min(24, dimensions.cellSize * 0.35));
+            const fontSize = Math.max(16, Math.min(36, dimensions.cellSize * 0.5));
             
             const traversedIndex = solutionAnimation.animatingCells.indexOf(cellId);
             const shouldAnimateAsGameNode = traversedIndex >= 0 && traversedIndex < solutionAnimation.currentIndex;
             const isAnimating = traversedIndex === solutionAnimation.currentIndex - 1;
             
-            let cellClasses = `cell${boardRevealAnimation.showCompleteClasses || isTransitioningOut ? ' cell-complete' : ''}`;
-            
-            if (solutionAnimation.showGreenPhase && isTraversed) {
-              cellClasses += ' solution-complete';
-            } else if (node.gameNode || shouldAnimateAsGameNode) {
-              cellClasses += ' game-node';
-            }
-            
-            if (gameStatus.isComplete) {
-              cellClasses += ' complete';
-            }
-            if (isTraversed && !shouldAnimateAsGameNode && !solutionAnimation.showGreenPhase) {
-              cellClasses += ' traversed';
-            }
-            if (isAnimating) {
-              cellClasses += ' animating';
-            }
+            const cellClasses = classNames('cell', {
+              'cell-complete': boardRevealAnimation.showCompleteClasses || isTransitioningOut,
+              'solution-complete': solutionAnimation.showGreenPhase && isTraversed,
+              'game-node': (node.gameNode || shouldAnimateAsGameNode) && !(solutionAnimation.showGreenPhase && isTraversed),
+              'complete': gameStatus.isComplete,
+              'traversed': isTraversed && !shouldAnimateAsGameNode && !solutionAnimation.showGreenPhase,
+              'animating': isAnimating
+            });
             
             return (
               <div
@@ -563,11 +541,10 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
                 onMouseEnter={() => handleMouseEnter(x, y)}
                 onTouchStart={(e) => handleTouchStart(e, x, y)}
                 style={{ 
-                  userSelect: 'none',
                   fontSize: `${fontSize}px`
                 }}
               >
-                {node.gameNode && node.gamePos}
+                {node.gameNode && <span className="game-node-number">{node.gamePos}</span>}
               </div>
             );
           })
@@ -586,14 +563,11 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
                 key={`wall-${index}`}
                 className="wall horizontal"
                 style={{
-                  position: 'absolute',
                   left: `${x}px`,
                   top: `${y}px`,
                   width: `${wallLength}px`,
                   height: `${wallThickness}px`,
-                  backgroundColor: '#cccccc',
-                  borderRadius: `${wallThickness / 2}px`,
-                  zIndex: 4
+                  borderRadius: `${wallThickness / 2}px`
                 }}
               />
             );
@@ -607,32 +581,18 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
                 key={`wall-${index}`}
                 className="wall vertical"
                 style={{
-                  position: 'absolute',
                   left: `${x}px`,
                   top: `${y}px`,
                   width: `${wallThickness}px`,
                   height: `${wallLength}px`,
-                  backgroundColor: '#cccccc',
-                  borderRadius: `${wallThickness / 2}px`,
-                  zIndex: 4
+                  borderRadius: `${wallThickness / 2}px`
                 }}
               />
             );
           }
         })}
         
-        <svg 
-          className="path-overlay"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            pointerEvents: 'none',
-            zIndex: 5
-          }}
-        >
+        <svg className="path-overlay">
           {gameState.currentPath.length > 1 && gameState.currentPath.map((cellId, index) => {
             if (index === 0) return null;
             
@@ -655,44 +615,13 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
                 y1={y1}
                 x2={x2}
                 y2={y2}
-                stroke={solutionAnimation.showGreenPhase ? "#dd3aa1" : "#783114"}
+                stroke={solutionAnimation.showGreenPhase ? "var(--color-complete)" : "var(--color-game-pieces)"}
                 strokeWidth={strokeWidth}
                 strokeLinecap="round"
               />
             );
           })}
           
-          {/* Dynamic preview line that follows mouse/touch */}
-          {gameState.isDrawing && gameState.currentPath.length > 0 && mousePosition && (
-            (() => {
-              const lastCellId = gameState.currentPath[gameState.currentPath.length - 1];
-              const lastCell = getCellFromId(lastCellId);
-              
-              const actualCellSize = dimensions.cellSize;
-              const cellSpacing = actualCellSize + dimensions.boardGap;
-              const x1 = dimensions.boardPadding + lastCell.x * cellSpacing + actualCellSize / 2;
-              const y1 = dimensions.boardPadding + lastCell.y * cellSpacing + actualCellSize / 2;
-              const x2 = mousePosition.x;
-              const y2 = mousePosition.y;
-              
-              const strokeWidth = Math.max(8, Math.min(24, dimensions.cellSize * 0.4));
-              
-              return (
-                <line
-                  key="preview-line"
-                  x1={x1}
-                  y1={y1}
-                  x2={x2}
-                  y2={y2}
-                  stroke="#783114"
-                  strokeWidth={strokeWidth}
-                  strokeLinecap="round"
-                  strokeDasharray="5,5"
-                  opacity="0.6"
-                />
-              );
-            })()
-          )}
         </svg>
       </div>
     </div>
