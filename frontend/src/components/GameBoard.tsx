@@ -65,7 +65,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
     const maxAvailableSpace = Math.min(availableHeight * 0.9, availableWidth * 0.9);
     
     const BOARD_PADDING = Math.max(15, Math.min(30, maxAvailableSpace * 0.04));
-    const BOARD_GAP = Math.max(2, Math.min(20, maxAvailableSpace * 0.025));
+    const BOARD_GAP = Math.max(2, Math.min(20, maxAvailableSpace * 0.035));
     
     const spaceForCells = maxAvailableSpace - (BOARD_PADDING * 2) - (BOARD_GAP * (boardSize - 1));
     const cellSize = Math.max(20, spaceForCells / boardSize);
