@@ -556,7 +556,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
           if (wall.horizontal) {
             const wallLength = (wall.x2 - wall.x1 + 1) * (dimensions.cellSize + dimensions.boardGap) - dimensions.boardGap;
             const x = dimensions.boardPadding + wall.x1 * (dimensions.cellSize + dimensions.boardGap);
-            const y = dimensions.boardPadding + (wall.y1 + 1) * dimensions.cellSize + wall.y1 * dimensions.boardGap + (dimensions.boardGap / 2) - (wallThickness / 2);
+            const y = dimensions.boardPadding + (wall.y1 + 1) * (dimensions.cellSize + dimensions.boardGap) - (dimensions.boardGap / 2) - (wallThickness / 2);
             
             return (
               <div
@@ -573,7 +573,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
             );
           } else {
             const wallLength = (wall.y2 - wall.y1 + 1) * (dimensions.cellSize + dimensions.boardGap) - dimensions.boardGap;
-            const x = dimensions.boardPadding + (wall.x1 + 1) * dimensions.cellSize + wall.x1 * dimensions.boardGap + (dimensions.boardGap / 2) - (wallThickness / 2);
+            const x = dimensions.boardPadding + (wall.x1 + 1) * (dimensions.cellSize + dimensions.boardGap) - (dimensions.boardGap / 2) - (wallThickness / 2);
             const y = dimensions.boardPadding + wall.y1 * (dimensions.cellSize + dimensions.boardGap);
             
             return (

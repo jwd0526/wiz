@@ -118,7 +118,7 @@
 
 .wall {
   position: absolute;
-  border: inset 2px var(--color-shadow);
+  border: inset 1px var(--color-shadow);
   z-index: 4;
 }
 
