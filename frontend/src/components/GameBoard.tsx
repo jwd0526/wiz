@@ -236,28 +236,6 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
     handleMouseDown(x, y);
   }, [handleMouseDown]);
 
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    e.preventDefault();
-    if (!gameState.isDrawing) return;
-
-    const touch = e.touches[0];
-    const boardRect = boardRef.current?.getBoundingClientRect();
-    if (!boardRect || !game) return;
-
-    const boardSize = game.board.length;
-    const dimensions = calculateDimensions(boardSize);
-    
-    const relativeX = touch.clientX - boardRect.left;
-    const relativeY = touch.clientY - boardRect.top;
-    
-    const cellSpacing = dimensions.cellSize + dimensions.boardGap;
-    const x = Math.floor((relativeX - dimensions.boardPadding) / cellSpacing);
-    const y = Math.floor((relativeY - dimensions.boardPadding) / cellSpacing);
-    
-    if (x >= 0 && x < boardSize && y >= 0 && y < boardSize) {
-      handleMouseEnter(x, y);
-    }
-  }, [gameState.isDrawing, game, calculateDimensions, handleMouseEnter]);
 
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
