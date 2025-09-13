@@ -237,21 +237,21 @@ function App() {
             className="button"
             disabled={currentLevel <= 1}
           >
-            <Left className="icon" size={200} color="#FFFFFF" />
+            <Left className="icon" size={200} color="#000000" />
           </button>
           <button 
             onClick={handleRestart} 
             className="button"
             disabled={gameStatus.pathLength === 0}
           >
-            <Restart className="icon" size={40} color="#FFFFFF" />
+            <Restart className="icon" size={40} color="#000000" />
           </button>
           <button 
             onClick={handleNextLevel} 
             className="button"
             disabled={(!gameStatus.isComplete && currentLevel >= highestLevel) || (gameStatus.isComplete && !nextLevelReady)}
           >
-            <Right className="icon" size={800} color="#FFFFFF" />
+            <Right className="icon" size={800} color="#000000" />
           </button>
         </div>
       </div>

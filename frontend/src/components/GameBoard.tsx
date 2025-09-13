@@ -591,7 +591,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
                   top: `${y}px`,
                   width: `${wallLength}px`,
                   height: `${wallThickness}px`,
-                  backgroundColor: '#333333',
+                  backgroundColor: '#cccccc',
                   borderRadius: `${wallThickness / 2}px`,
                   zIndex: 4
                 }}
@@ -612,7 +612,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
                   top: `${y}px`,
                   width: `${wallThickness}px`,
                   height: `${wallLength}px`,
-                  backgroundColor: '#333333',
+                  backgroundColor: '#cccccc',
                   borderRadius: `${wallThickness / 2}px`,
                   zIndex: 4
                 }}
@@ -655,7 +655,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
                 y1={y1}
                 x2={x2}
                 y2={y2}
-                stroke={solutionAnimation.showGreenPhase ? "#22c55e" : "#87ceeb"}
+                stroke={solutionAnimation.showGreenPhase ? "#dd3aa1" : "#783114"}
                 strokeWidth={strokeWidth}
                 strokeLinecap="round"
               />
@@ -684,7 +684,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
                   y1={y1}
                   x2={x2}
                   y2={y2}
-                  stroke="#87ceeb"
+                  stroke="#783114"
                   strokeWidth={strokeWidth}
                   strokeLinecap="round"
                   strokeDasharray="5,5"
