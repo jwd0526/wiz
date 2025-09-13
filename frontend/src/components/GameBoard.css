@@ -109,8 +109,8 @@
   background: var(--color-complete);
   box-shadow: none;
   font-family: "Fredoka One", cursive;
-  text-shadow: -1px -1px 1px var(--color-shadow),
-               1px 1px 1px var(--color-complete);
+  text-shadow: 0px 0px 0px var(--color-complete),
+               0px 0px 0px var(--color-complete);
   color: var(--color-complete);
   transform: translateY(-1px);
   transition: none !important;
