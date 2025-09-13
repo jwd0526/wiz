@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"api/internal/generator"
-	"api/internal/types"
+	"wiz/internal/generator"
+	"wiz/internal/types"
 	"encoding/json"
 	"log"
 	"net/http"

@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"api/internal/types"
+	"wiz/internal/types"
 	"math"
 	"math/rand"
 )

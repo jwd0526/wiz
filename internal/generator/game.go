@@ -1,8 +1,8 @@
 package generator
 
 import (
-	"api/internal/types"
-	"api/internal/utils"
+	"wiz/internal/types"
+	"wiz/internal/utils"
 	"errors"
 	"math/rand"
 )
