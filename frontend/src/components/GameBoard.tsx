@@ -227,6 +227,40 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
     setGameState(prev => ({ ...prev, isDrawing: false }));
   }, [gameState.isDrawing]);
 
+  // Touch event handlers
+  const handleTouchStart = useCallback((e: React.TouchEvent, x: number, y: number) => {
+    e.preventDefault();
+    handleMouseDown(x, y);
+  }, [handleMouseDown]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    e.preventDefault();
+    if (!gameState.isDrawing) return;
+
+    const touch = e.touches[0];
+    const boardRect = boardRef.current?.getBoundingClientRect();
+    if (!boardRect || !game) return;
+
+    const boardSize = game.board.length;
+    const dimensions = calculateDimensions(boardSize);
+    
+    const relativeX = touch.clientX - boardRect.left;
+    const relativeY = touch.clientY - boardRect.top;
+    
+    const cellSpacing = dimensions.cellSize + dimensions.boardGap;
+    const x = Math.floor((relativeX - dimensions.boardPadding) / cellSpacing);
+    const y = Math.floor((relativeY - dimensions.boardPadding) / cellSpacing);
+    
+    if (x >= 0 && x < boardSize && y >= 0 && y < boardSize) {
+      handleMouseEnter(x, y);
+    }
+  }, [gameState.isDrawing, game, calculateDimensions, handleMouseEnter]);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    e.preventDefault();
+    handleMouseUp();
+  }, [handleMouseUp]);
+
   const clearPath = useCallback(() => {
     setGameState({ currentPath: [], isDrawing: false });
     onPathChange?.(false, 0);
@@ -470,6 +504,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
           position: 'relative'
         }}
         onMouseLeave={handleMouseUp}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         {game.board.map((row, y) =>
           row.map((node, x) => {
@@ -505,6 +541,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
                 className={cellClasses}
                 onMouseDown={() => handleMouseDown(x, y)}
                 onMouseEnter={() => handleMouseEnter(x, y)}
+                onTouchStart={(e) => handleTouchStart(e, x, y)}
                 style={{ 
                   userSelect: 'none',
                   fontSize: `${fontSize}px`

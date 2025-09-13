@@ -23,6 +23,8 @@ function App() {
   });
   const [greenAnimationComplete, setGreenAnimationComplete] = useState<boolean>(false);
   const [isTransitioningOut, setIsTransitioningOut] = useState<boolean>(false);
+  const [nextLevelReady, setNextLevelReady] = useState<boolean>(false);
+  const [pendingGame, setPendingGame] = useState<Game | null>(null);
 
   const getLevelConfig = (level: number) => {
     if (level <= 4) {
@@ -137,8 +139,10 @@ function App() {
   };
 
   const handleNextLevel = () => {
-    setIsTransitioningOut(true);
-    setCurrentLevel(currentLevel + 1);
+    if (nextLevelReady && pendingGame) {
+      setIsTransitioningOut(true);
+      setCurrentLevel(currentLevel + 1);
+    }
   };
 
   const handlePrevLevel = () => {
@@ -162,15 +166,41 @@ function App() {
   };
 
   useEffect(() => {
-    if (isTransitioningOut) {
+    if (isTransitioningOut && pendingGame) {
       const timer = setTimeout(() => {
-        generateLevel(currentLevel);
+        setGame(pendingGame);
+        setPendingGame(null);
+        setNextLevelReady(false);
         setIsTransitioningOut(false);
+        setGreenAnimationComplete(false);
+        setGameStatus({ isValid: false, pathLength: 0, isComplete: false });
       }, 300);
 
       return () => clearTimeout(timer);
     }
-  }, [isTransitioningOut, currentLevel, generateLevel]);
+  }, [isTransitioningOut, pendingGame]);
+
+  // Generate next level when green animation completes
+  useEffect(() => {
+    if (greenAnimationComplete && gameStatus.isComplete && !nextLevelReady) {
+      const nextLevel = currentLevel + 1;
+      const config = getLevelConfig(nextLevel);
+      
+      generateGame(config.size, config.nodes, config.walls)
+        .then(newGame => {
+          setPendingGame(newGame);
+          setNextLevelReady(true);
+        })
+        .catch(err => {
+          if (err instanceof ApiError) {
+            setError(err.message);
+          } else {
+            setError('An unexpected error occurred');
+          }
+          console.error('Error pre-generating next level:', err);
+        });
+    }
+  }, [greenAnimationComplete, gameStatus.isComplete, nextLevelReady, currentLevel]);
 
   useEffect(() => {
     generateLevel(1);
@@ -219,7 +249,7 @@ function App() {
           <button 
             onClick={handleNextLevel} 
             className="button"
-            disabled={(!gameStatus.isComplete && currentLevel >= highestLevel) || (gameStatus.isComplete && !greenAnimationComplete)}
+            disabled={(!gameStatus.isComplete && currentLevel >= highestLevel) || (gameStatus.isComplete && !nextLevelReady)}
           >
             <Right className="icon" size={800} color="#FFFFFF" />
           </button>
