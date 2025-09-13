@@ -2,7 +2,16 @@
     "version": 2,
     "buildCommand": "cd frontend && npm ci && npm run build",
     "outputDirectory": "frontend/dist",
+    "functions": {
+        "api/generate.go": {
+            "runtime": "go1.x"
+        }
+    },
     "routes": [
+        {
+            "src": "/api/generate",
+            "dest": "/api/generate.go"
+        },
         {
             "src": "/wiz$",
             "dest": "/index.html"
@@ -10,6 +19,10 @@
         {
             "src": "/wiz/(.*)",
             "dest": "/$1"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/index.html"
         }
     ]
 }

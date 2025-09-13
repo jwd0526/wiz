@@ -487,7 +487,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, onGameComplete, onPathChang
   if (!game) {
     return (
       <div className="board-placeholder">
-        <p>Click "Generate Game" to create a board</p>
+        <p>Error loading game content</p>
       </div>
     );
   }
